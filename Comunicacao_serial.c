@@ -206,25 +206,6 @@ void initButtons() {
     gpio_set_irq_enabled_with_callback(BUTTON_B, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
 }
 
-// Função para tratar caracteres recebidos via UART
-// void handleUART() {
-//     if (uart_is_readable(uart0)) {
-//         char receivedChar = uart_getc(uart0);
-
-//         // Exibição do caractere no display
-//         ssd1306_fill(&ssd, false);
-//         ssd1306_draw_string(&ssd, "Caractere: ", 10, 10);
-//         char buffer[2] = {receivedChar, '\0'};
-//         ssd1306_draw_string(&ssd, buffer, 80, 10);
-//         ssd1306_send_data(&ssd);
-
-//         // Exibição de número na matriz WS2812 (se for um número)
-//         if (receivedChar >= '0' && receivedChar <= '9') {
-//             int number = receivedChar - '0';
-//             display_number(number); // Exibe o número na matriz de LEDs
-//         }
-//     }
-// }
 
 void handle_char() {
     // Verifica se há caracteres disponíveis na entrada USB
