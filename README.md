@@ -118,10 +118,10 @@ void gpio_irq_handler(uint gpio, uint32_t events) {
 A função void gpio_irq_handler tem como objetivo fazer com que ocorra as ações no pushbotton . ultimo_tempo_a, ultimo_tempo_b e lastInterruptTime tem como função fazer o debounce para controlar a acção do pushbotton e evita alguns problemas. if(gpio) para dividir a função de A para alternar o estado do led verde e imprimir a informação do estado do led no display e no serial monitor e B  para alternar o estado do azul e imprimir a informação do estado do led no display e no serial monitor. 
 
 ## Diagrama de Conexões 💡:
-
+https://wokwi.com/projects/422377591437172737
 
 
   
  ## 🔗 Link do Vídeo de Funcionamento:
-
+https://drive.google.com/file/d/1ZxTN01sfR_elkxq_PDYkBYYqFuzBthak/view?usp=sharing
 
