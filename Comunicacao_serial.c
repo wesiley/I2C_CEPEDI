@@ -13,6 +13,7 @@
 
 // Definições de pinos
 #define I2C_PORT i2c1
+#define UART_ID uart0 // Porta UART
 #define I2C_SDA 14
 #define I2C_SCL 15
 #define OLED_ADDRESS 0x3C
@@ -161,6 +162,8 @@ void gpio_irq_handler(uint gpio, uint32_t events) {
 
             // Atualização do display
             ssd1306_fill(&ssd, false);
+            ssd1306_rect(&ssd, 0, 0, 128, 64, true, false);
+            ssd1306_rect(&ssd, 2, 2, 124, 60, true, false);   
             ssd1306_draw_string(&ssd, greenLedState ? "Led Verde Ligado" : "Led Verde Desligado", 10, 10);
             ssd1306_send_data(&ssd);
 
@@ -179,7 +182,9 @@ void gpio_irq_handler(uint gpio, uint32_t events) {
 
             // Atualização do display
             ssd1306_fill(&ssd, false);
-            ssd1306_draw_string(&ssd, blueLedState ? "Led Azul Ligado" : "Led Azul Desligado", 10, 30);
+            ssd1306_rect(&ssd, 0, 0, 128, 64, true, false);
+            ssd1306_rect(&ssd, 2, 2, 124, 60, true, false);
+            ssd1306_draw_string(&ssd, blueLedState ? "Led Azul Ligado" : "Led Azul Desligado", 10, 10);
             ssd1306_send_data(&ssd);
 
             // Envio de mensagem ao Serial Monitor
@@ -221,13 +226,15 @@ void initButtons() {
 //     }
 // }
 
-void handleUSB() {
+void handle_char() {
     // Verifica se há caracteres disponíveis na entrada USB
     int receivedChar = getchar();
 
     if (receivedChar != PICO_ERROR_TIMEOUT) { // Se um caractere foi recebido
         // Exibição do caractere no display
         ssd1306_fill(&ssd, false);
+        ssd1306_rect(&ssd, 0, 0, 128, 64, true, false);
+        ssd1306_rect(&ssd, 2, 2, 124, 60, true, false);
         ssd1306_draw_string(&ssd, "Caractere: ", 10, 10);
         char buffer[2] = {(char)receivedChar, '\0'};
         ssd1306_draw_string(&ssd, buffer , 90, 10);
@@ -245,6 +252,7 @@ void handleUSB() {
 // Função principal
 int main() {
     stdio_init_all(); // Inicializa a comunicação serial
+    uart_init(UART_ID, 115200);
     initI2C(); // Inicializa o I2C
     initDisplay(); // Inicializa o display
     initWS2812(); // Inicializa os LEDs WS2812
@@ -257,14 +265,12 @@ int main() {
     gpio_set_dir(LED_RGB_RED, GPIO_OUT);
     gpio_set_dir(LED_RGB_GREEN, GPIO_OUT);
     gpio_set_dir(LED_RGB_BLUE, GPIO_OUT);
+
     
     while (true) {
         if (stdio_usb_connected()) {
-            bool cor = true;
-            cor = !cor;
-            ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
-
-            handleUSB(); // Verifica se há caracteres recebidos via UART
+ 
+            handle_char(); // Verifica se há caracteres recebidos via UART
         }
         sleep_ms(100); // Pequeno delay para evitar sobrecarga
     }
