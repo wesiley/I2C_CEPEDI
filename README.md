@@ -38,7 +38,7 @@ Esse projeto faz uso do display que tem quase todos os caracteres incluidos, e f
 
 ## Funcionamento do Loop Principal 🔄 
 ```
-void handleUSB() {
+void handle_char() {
     // Verifica se há caracteres disponíveis na entrada USB
     int receivedChar = getchar();
 
@@ -61,13 +61,13 @@ void handleUSB() {
 while (true) {
         if (stdio_usb_connected()) {
             
-            handleUSB(); // Verifica se há caracteres recebidos via UART
+            handle_char(); // Verifica se há caracteres recebidos via UART
         }
         sleep_ms(100); // Pequeno delay para evitar sobrecarga
     }
    
   ```
-O loop while (true) garante execução contínua. O código lê um caractere e o exibe no display OLED e no terminal. Se for um número (0-9), ele também é exibido na matriz de LEDs WS2812. O loop principal verifica a conexão USB e chama handleUSB() a cada 100ms. 
+O loop while (true) garante execução contínua. O código lê um caractere e o exibe no display OLED e no terminal. Se for um número (0-9), ele também é exibido na matriz de LEDs WS2812. O loop principal verifica a conexão USB e chama handle_char() a cada 100ms. 
 
 ## Funcionamento da interrupção.
 ```
@@ -105,7 +105,7 @@ void gpio_irq_handler(uint gpio, uint32_t events) {
 
             // Atualização do display
             ssd1306_fill(&ssd, false);
-            ssd1306_draw_string(&ssd, blueLedState ? "Led Azul Ligado" : "Led Azul Desligado", 10, 30);
+            ssd1306_draw_string(&ssd, blueLedState ? "Led Azul Ligado" : "Led Azul Desligado", 10, 10);
             ssd1306_send_data(&ssd);
 
             // Envio de mensagem ao Serial Monitor
